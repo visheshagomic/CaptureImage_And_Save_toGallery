@@ -29,15 +29,20 @@ function App() {
     ).then(res => {
       if (res == true) {
         setPermission(true);
+        console.log(`Permission Granted`,"res")
       } else {
+        console.log(`Not Granted`)
+
         PermissionsAndroid.check(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            message: 'Please Give Access to save Image',
-            title: 'Storage Permission',
-          },
+          // {
+          //   message: 'Please Give Access to save Image',
+          //   title: 'Storage Permission',
+          // },
         ).then(res => {
           setPermission(true);
+          console.log(`Permission Granted`)
+
         });
       }
     });
@@ -54,7 +59,7 @@ function App() {
   };
 
   function saveImage(data) {
-    const folderPath = '/storage/emulated/0/DocSutra/Images';
+    const folderPath = `/storage/emulated/0/DocSutra/Images/${data}`;
     const filePath = folderPath + '/' + data;
     //console.log(fileName)
     RNFetchBlob.fs.isDir(folderPath).then(res => {
@@ -74,9 +79,10 @@ function App() {
   }
 
   function addImage(params) {
+    console.log(params,`params`)
     RNFetchBlob.fs.createFile(params, 'base64').then(() => {
       console.log('File Saved');
-      Alert("Image Saved")
+      Alert.alert("Image Saved")
     });
   }
 
